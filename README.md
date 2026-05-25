@@ -31,3 +31,19 @@ Enumeration of SMB revealed that network shares were misconfigured to allow gues
 
 ![SMB Solution Validation](port139-smb/smb_solution_validation.png)
 
+## Port 3306 - MySQL
+
+Enumeration revealed that the mySQL database was misconfigured to listen on all network interfaces (0.0.0.0), exposing it to external routing.
+
+**Exploit**: Attempted to connect to the MySQL database. Received error "Access denied for user 'root'@'10.0.0.100'" confirming it was listening to external traffic instead of dropping them.
+
+![MySQL Exploitation](port3306-MySQL/mysql_exploitation.png)
+
+**Solution**: Edited the `mysqld.cnf` configuration file to enforce segmentation by changing "bind-address = 0.0.0.0" to "bind-address = 127.0.0.1" and then restarted service.
+
+![MySQL Solution](port3306-MySQL/mysql_solution.png)
+
+**Validation**: Attempted to connect to the database again and received error "Can't connect to server..." error, confirming the mySQL database is now ignoring external requests and strictly bound to localhost.
+
+![MySQL Validation](port3306-MySQL/mysql_validation.png)
+
