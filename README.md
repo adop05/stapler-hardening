@@ -1,3 +1,19 @@
+# Vulnerability Assessment and Hardening Report: Stapler
+
+## Executive Summary
+This repository contains a penetration test and security hardening report for the "Stapler" boot-to-root virtual machine. This project demonstrates a full-cycle security assessment, transitioning from offensive reconnaissance and vulnerability discovery to defensive engineering and host-based mitigation.
+
+**Skills Demonstrated**
+* Network Enumeration & Banner Grabbing
+* Web Application Vulnerability Discovery
+* Access Control & Privilege Management
+* Host-Based Firewall Configuration (`iptables`)
+* Intrusion Prevention Systems (`fail2ban`)
+
+**Tools & Environment**
+* **Offensive:** Kali Linux, Nmap, Dirb, Netcat, WPScan
+* **Defensive:** Linux CLI, Apache, MySQL, iptables, fail2ban
+
 ## Port 21 - FTP
 
 Nmap revealed that the FTP service was allowing anonymous logins, meaning that threat actors could connect to the server and read or modify files without any credential validation.
@@ -64,7 +80,7 @@ Enumeration of the HTTP port revealed that the web server was incorrectly set up
 
 ![HTTP Enumeration](port80_12380-web-servers/exploitation/port80_directory_enumeration.png)
 
-Enumeration of the HTTPS port revealed an intentionally obscured administrative structure and a outdated Content Management System (CMS).
+Enumeration of the HTTPS port revealed an intentionally obscured administrative structure and an outdated Content Management System (CMS).
 
 **Discovery**: Executed a directory brute-force scan (`dirb https://stapler:12380`) which revealed a hidden `/phpmyadmin/` portal. Manual review of the `robots.txt` file uncovered additional obscured directories, including `/blogblog/` and `/admin112233/`. 
 
@@ -102,7 +118,7 @@ Source code analysis of the `/blogblog/` directory leaked the exact CMS version 
 
 ![WP-Admin Validation](port80_12380-web-servers/validation/WP-admin_access_control_validation.png)
 
-* Reviewed the source HTML of the WordPress blog; verified the generator meta tag is no shown.
+* Reviewed the source HTML of the WordPress blog; verified the generator meta tag is no longer shown.
 
 ![Generator Tag Validation](port80_12380-web-servers/validation/generator_tag_validation.png)
 
